@@ -1,7 +1,7 @@
 <?php
 
 	// example use from browser
-	// http://localhost/companydirectory/libs/php/getPersonnelByID.php?id=1
+	// http://localhost/companydirectory/libs/php/getAll.php
 
 	// remove next two lines for production
 	
@@ -32,43 +32,9 @@
 
 	}	
 
-	// first query - SQL statement accepts parameters and so is prepared to avoid SQL injection.
-	// $_REQUEST used for development / debugging. Remember to change to $_POST for production
+	// SQL does not accept parameters and so is not prepared
 
-	$query = $conn->prepare('SELECT * from personnel WHERE id = ?');
-
-	$query->bind_param("i", $_REQUEST['id']);
-
-	$query->execute();
-	
-	if (false === $query) {
-
-		$output['status']['code'] = "400";
-		$output['status']['name'] = "executed";
-		$output['status']['description'] = "query failed";	
-		$output['data'] = [];
-
-		mysqli_close($conn);
-
-		echo json_encode($output); 
-
-		exit;
-
-	}
-    
-	$result = $query->get_result();
-
-   	$data = [];
-
-	while ($row = mysqli_fetch_assoc($result)) {
-
-		array_push($data, $row);
-
-	}
-
-	// second query - does not accept parameters and so is not prepared
-
-	$query = 'SELECT id, name from department ORDER BY name';
+	$query = $query = 'SELECT lastName, firstName, id FROM personnel ORDER BY lastName, firstName';
 
 	$result = $conn->query($query);
 	
@@ -84,6 +50,14 @@
 		echo json_encode($output); 
 
 		exit;
+
+	}
+   
+   	$data = [];
+
+	while ($row = mysqli_fetch_assoc($result)) {
+
+		array_push($data, $row);
 
 	}
 

@@ -11,3 +11,11 @@
     color: red;
     font-style: italic;
 }
+
+.nav-item:hover {
+    cursor: pointer;
+}
+
+.filter-head {
+    font-weight: 600 !important;
+}

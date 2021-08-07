@@ -2,3 +2,12 @@
     background-color: rgba(236, 236, 236, 1);
     cursor: pointer;
 }
+
+.floatRight {
+    text-align: right;
+}
+
+.invalidText {
+    color: red;
+    font-style: italic;
+}

@@ -21,8 +21,58 @@
 
         <ol id="directory" class="list-group list-group-flush"></ol>
 
-        <p id="email">First Paragraph</p>
-        <p id="departmentID">Second Paragraph</p>
+        <div id="employeeModal" class="modal" tabindex="-1">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 id="employeeName" class="modal-title">Modal title</h5>
+                      <button type="button" class="btn-close employee-modal-close-btn" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div id="employeeInfo" class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary employee-modal-close-btn" data-bs-dismiss="modal">Close</button>
+                      <button id="employeeEdit" type="button" class="btn btn-primary">Edit</button>
+                      <button id="employeeSubmit" type="button" class="btn btn-primary">Submit</button>
+                    </div>
+                  </div>
+                </div>
+        </div>
+
+        <div id="saveConfirmation" class="modal" tabindex="-1">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Save changes</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p>Are you sure you want to save your changes?</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                      <button id="saveChanges" type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </div>
+                </div>
+        </div>
+
+        <div id="updateStatus" class="modal" tabindex="-1">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Update Status</h5>
+                      <button id='updateStatusClsBtn' type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div id='statusBody' class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                  </div>
+                </div>
+        </div>
+              
+              
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" 
                 integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 

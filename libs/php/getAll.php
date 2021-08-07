@@ -34,11 +34,15 @@
 
 	// SQL does not accept parameters and so is not prepared
 
-	$query = 'SELECT p.lastName, p.firstName, p.jobTitle, p.email, d.name as department, l.name as location FROM personnel p LEFT JOIN department d ON (d.id = p.departmentID) LEFT JOIN location l ON (l.id = d.locationID) ORDER BY p.lastName, p.firstName, d.name, l.name';
+	$query = $conn->prepare('SELECT p.lastName, p.firstName, p.jobTitle, p.email, d.name as department, l.name as location FROM personnel p LEFT JOIN department d ON (d.id = p.departmentID) LEFT JOIN location l ON (l.id = d.locationID) WHERE p.id = ? ORDER BY p.lastName, p.firstName, d.name, l.name');
 
-	$result = $conn->query($query);
+	//$query = $conn->prepare('SELECT * FROM personnel WHERE id = ? LEFT JOIN department ON department.id = personnel.departmentID');
+
+	$query->bind_param("i", $_REQUEST["id"]);
+
+	$query->execute();
 	
-	if (!$result) {
+	if (!$query) {
 
 		$output['status']['code'] = "400";
 		$output['status']['name'] = "executed";
@@ -52,6 +56,8 @@
 		exit;
 
 	}
+
+	$result = $query->get_result();
    
    	$data = [];
 

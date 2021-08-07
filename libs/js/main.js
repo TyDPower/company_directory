@@ -1,5 +1,7 @@
 var employee = {};
 
+var sortState;
+
 const getPersonnelByID = (id) => {
 
     return new Promise((res, rej)=> {
@@ -46,15 +48,227 @@ const getDepartmentByID = () => {
     })
 };
 
+const sortPersonnelByFirst = () => {
+    $.ajax({
+        url: "./libs/php/getAllPersonnelSortByFirst.php",
+        type: "post",
+        dataType: "json",
+        success: (resp)=> {
+            sortState = 'firstName';
+            $("#directory").html('');
+            for (let i=0; i<26; i++) {
+                var chr = String.fromCharCode(65 + i);
+                $("#directory").append(`
+                        <li id='${chr}' class="list-group-item directory-items">${chr}</li>
+                    `)
+                $.each(resp.data, (i, d)=> {
+                    if (d.firstName.charAt(0).toUpperCase() == chr) {
+                        $("#directory").append(`
+                        <li value=${d.id} class="list-group-item directory-items"><i class="far fa-id-card"></i>&nbsp${d.firstName + ", " + d.lastName}</li>
+                    `)
+                    }                    
+                })
+            }
+        },
+        error: (err)=> {
+            console.error(err)
+        }
+    })
+    
+};
+
+const sortPersonnelByID = () => {
+    $.ajax({
+        url: "./libs/php/getAllPersonnelSortByID.php",
+        type: "post",
+        dataType: "json",
+        success: (res)=> {
+            sortState = 'ID';
+            $("#directory").html('');
+            $.each(res.data, (i, d)=> {
+                $("#directory").append(`
+                    <li value=${d.id} class="list-group-item directory-items"><i class="far fa-id-card"></i>&nbsp${d.id + " " + d.firstName + " " + d.lastName}</li>
+                `)                   
+            })
+        },
+        error: (err)=> {
+            console.error(err)
+        }
+    })
+    
+};
+
+const sortPersonnelByDep = () => {
+
+    return new Promise((resolve, reject)=> {
+        $.ajax({
+            url: './libs/php/getAllPersonnelSortByDep.php',
+            type: 'post',
+            dataType: 'json',
+    
+            success: (res)=> {
+                sortState = 'department';
+                res.headArr = [];
+                $("#directory").html('');
+
+                let depProm = () => {
+                    return new Promise((resolve, reject)=> {
+                        $.each(res.data, (i, d)=> {
+                            if (!res.headArr.includes(d.department)) {
+                                res.headArr.push(d.department)
+                            };
+                        });
+
+                        if (res.headArr.length <= 0) {
+                            reject("No headers in the header array!");
+                        }
+
+                        resolve();
+                    })
+                };
+
+                depProm()
+                .then(()=> {
+                    $.each(res.headArr, (i, dep)=> {
+                        $("#directory").append(`
+                            <li id='${dep}' class="list-group-item directory-items">${dep}</li>
+                        `)
+            
+                        $.each(res.data, (i, d)=> {
+                            if (d.department == dep) {
+                                $("#directory").append(`
+                                <li value=${d.id} class="list-group-item directory-items"><i class="far fa-id-card"></i>&nbsp${d.lastName + ", " + d.firstName}</li>
+                            `)
+                            }                    
+                        })
+            
+                    });
+                })
+                .then(()=> resolve())
+                .catch((err)=> console.error(err))
+            },
+    
+            error: (err)=> {
+                reject(err);
+            }
+        });  
+    })
+}
+
+const sortPersonnelByLoc = () => {
+
+    return new Promise((resolve, reject)=> {
+        $.ajax({
+            url: './libs/php/getAllPersonnelSortByDep.php',
+            type: 'post',
+            dataType: 'json',
+    
+            success: (res)=> {
+                sortState = 'location';
+                res.headArr = [];
+                $("#directory").html('');
+
+                let newProm = () => {
+                    return new Promise((resolve, reject)=> {
+                        $.each(res.data, (i, d)=> {
+                            if (!res.headArr.includes(d.location)) {
+                                res.headArr.push(d.location)
+                            };
+                        })
+
+                        if (res.headArr.length <= 0) {
+                            reject("No headers in the header array!");
+                        }
+
+                        resolve();
+                    })
+                };
+
+                newProm()
+                .then(()=> {
+                    $.each(res.headArr, (i, loc)=> {
+                        $("#directory").append(`
+                            <li id='${loc}' class="list-group-item directory-items">${loc}</li>
+                        `)
+            
+                        $.each(res.data, (i, d)=> {
+                            if (d.location == loc) {
+                                $("#directory").append(`
+                                <li value=${d.id} class="list-group-item directory-items"><i class="far fa-id-card"></i>&nbsp${d.lastName + ", " + d.firstName}</li>
+                            `)
+                            }                    
+                        })
+            
+                    })
+                })
+                .then(()=> resolve())
+                .catch((err)=> console.error(err))    
+            },
+    
+            error: (err)=> {
+                reject(err);
+            }
+        });  
+    })
+}
+
 const getAllPersonnel = () => {
     $.ajax({
         url: "./libs/php/getAllPersonnel.php",
         type: "post",
         dataType: "json",
         success: (resp)=> {
-            $.each(resp.data, (i, d)=> {
+            $("#directory").html('');
+            sortState = 'lastName';
+            for (let i=0; i<26; i++) {
+                var chr = String.fromCharCode(65 + i);
                 $("#directory").append(`
-                    <li id="emID${d.id}" value=${d.id} class="list-group-item directory-items"><i class="far fa-id-card"></i>&nbsp${d.lastName + ", " + d.firstName}</li>
+                        <li id='${chr}' class="list-group-item directory-items">${chr}</li>
+                    `)
+                $.each(resp.data, (i, d)=> {
+                    if (d.lastName.charAt(0).toUpperCase() == chr) {
+                        $("#directory").append(`
+                        <li value=${d.id} class="list-group-item directory-items"><i class="far fa-id-card"></i>&nbsp${d.lastName + ", " + d.firstName}</li>
+                    `)
+                    }                    
+                })
+            }
+        },
+        error: (err)=> {
+            console.error(err)
+        }
+    })
+};
+
+const getAllDepartments = () => {
+    $.ajax({
+        url: "./libs/php/getAllDepartments.php",
+        type: "post",
+        dataType: "json",
+        success: (res)=> {
+            $("#directory").html('');
+            $.each(res.data, (i, d)=> {
+                $("#directory").append(`
+                    <li value=${d.id} class="list-group-item directory-items"><i class="fas fa-building"></i>&nbsp${d.name}</li>
+                `)
+            })
+        },
+        error: (err)=> {
+            console.error(err)
+        }
+    })
+};
+
+const getAllLocations = () => {
+    $.ajax({
+        url: "./libs/php/getAllLocations.php",
+        type: "post",
+        dataType: "json",
+        success: (res)=> {
+            $("#directory").html('');
+            $.each(res.data, (i, d)=> {
+                $("#directory").append(`
+                    <li value=${d.id} class="list-group-item directory-items"><i class="fas fa-map-marked-alt"></i>&nbsp${d.name}</li>
                 `)
             })
         },
@@ -138,11 +352,10 @@ const disableBtn = (btn, state) => {
     $('#'+btn).prop('disabled', state);
 };
 
-getAllPersonnel();
-
-setTimeout(()=> {
+const dirItemDetails = () => {
     $(".directory-items").click(function() {
         let id = $(this).val();
+        console.log(id)
         $.ajax({
             url: "./libs/php/getPersonnelByID.php",
             type: "post",
@@ -199,6 +412,34 @@ setTimeout(()=> {
             }
         })
     })
+};
+
+const sortStateTog = (sort) => {
+
+    switch(sort) {
+        case 'lastName':
+            getAllPersonnel();
+            break;
+        case 'firstName':
+            sortPersonnelByFirst();
+            break;
+        case 'ID':
+            sortPersonnelByID();
+            break;
+        case 'department':
+            sortPersonnelByDep();
+            break;
+        case 'location':
+            sortPersonnelByLoc();
+            break;
+        default:
+            getAllPersonnel();
+    }
+};
+
+getAllPersonnel();
+setTimeout(()=> {
+    dirItemDetails();
 }, 100);
 
 $("#employeeEdit").on("click", ()=> {
@@ -344,12 +585,14 @@ $("#employeeEdit").on("click", ()=> {
 
             success: (res)=> {
                 if (res.status.name == "ok") {
+                    $('#directory').html('');
+                    sortStateTog(sortState);
                     $('#employeeEdit').show();
                     $('#updateStatus').show();
-                    $(`#emID${employee.id}`).html(`
-                        <i class="far fa-id-card"></i>&nbsp${employee.lname + ", " + employee.fname}</li>
-                    `)
                     $('#statusBody').html('Your changes were successful.')
+                    setTimeout(()=> {
+                        dirItemDetails();
+                    }, 100);
                     setTimeout(()=> {
                         $('#updateStatus').hide();
                         employee = null;
@@ -364,7 +607,6 @@ $("#employeeEdit").on("click", ()=> {
     })
 });
 
-
 $('.employee-modal-close-btn').on("click", ()=> {
     $("#employeeModal").hide();
     $('#employeeEdit').show();
@@ -374,3 +616,56 @@ $('#updateStatusClsBtn').on('click', ()=> {
     $('#updateStatus').hide();
     $('#employeeEdit').show();
 });
+
+$('#navEmp').on('click', ()=> {
+    $('.nav-link').removeClass('active');
+    $('#navEmp').addClass(' active');
+    getAllPersonnel();
+});
+
+$('#navDep').on('click', ()=> {
+    $('.nav-link').removeClass(' active');
+    $('#navDep').addClass(' active');
+    getAllDepartments();
+});
+
+$('#navLoc').on('click', ()=> {
+    $('.nav-link').removeClass(' active');
+    $('#navLoc').addClass(' active');
+    getAllLocations();
+});
+
+$('#sortLast').on('click', ()=> {
+    getAllPersonnel();
+    setTimeout(()=> {
+        dirItemDetails();
+    }, 100);
+})
+
+$('#sortFirst').on('click', ()=> {
+    sortPersonnelByFirst();
+    setTimeout(()=> {
+        dirItemDetails();
+    }, 100);
+    
+})
+
+$('#sortID').on('click', ()=> {
+    sortPersonnelByID();
+    setTimeout(()=> {
+        dirItemDetails();
+    }, 100)
+})
+
+$('#sortDep').on('click', ()=> {
+    sortPersonnelByDep()
+    .then(()=> dirItemDetails())
+    .catch((err)=> console.error(err));
+})
+
+$('#sortLoc').on('click', ()=> {
+    sortPersonnelByLoc()
+    .then(()=> dirItemDetails())
+    .catch((err)=> console.error(err));
+})
+

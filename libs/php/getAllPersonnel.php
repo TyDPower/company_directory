@@ -34,7 +34,7 @@
 
 	// SQL does not accept parameters and so is not prepared
 
-	$query = $query = 'SELECT lastName, firstName, id FROM personnel ORDER BY lastName, firstName';
+	$query = 'SELECT lastName, firstName, id FROM personnel ORDER BY lastName, firstName';
 
 	$result = $conn->query($query);
 	

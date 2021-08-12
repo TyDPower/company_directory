@@ -28,13 +28,16 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <span id="navEmp" class="nav-link active"><i class="fas fa-users"></i> Employees</span>
+                <span id="navEmp" class="nav-link active"><i class="fas fa-users"></i> Personnel</span>
               </li>
               <li class="nav-item">
                 <span id='navDep' class="nav-link"><i class="fas fa-building"></i> Departments</span>
               </li>
               <li class="nav-item">
                 <span id='navLoc' class="nav-link"><i class="fas fa-map-marked-alt"></i> Locations</span>
+              </li>
+              <li class="nav-item">
+                <span id='navAddNew' class="nav-link"><i class="fas fa-plus"></i> Add New</span>
               </li>
               <li class="nav-item dropdown">
                 <span class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-filter"></i>
@@ -49,72 +52,28 @@
                   <li><span id='sortLoc' class="dropdown-item" >Location</span></li>
                   <li><hr class="dropdown-divider"></li>
                   <li><span class="dropdown-item filter-head">Filter Records</span></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  <li><span id='filterLoc' class="dropdown-item" >By Location</span></li>
+                  <li><span id='filterDep' class="dropdown-item" >By Department</span></li>
                 </ul>
               </li>
             </ul>
             <form class="d-flex">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <input class="form-control me-2" type="search" placeholder="Search by Name or ID" aria-label="Search">
               <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
           </div>
         </div>
       </nav>
 
-      <div>
-        <ol id="directory" class="list-group list-group-flush"></ol>
-      </div>
+      <table id='directoryTable' class="table table-hover"></table>
 
-      <div id="employeeModal" class="modal" tabindex="-1">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 id="employeeName" class="modal-title">Modal title</h5>
-                      <button type="button" class="btn-close employee-modal-close-btn" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div id="employeeInfo" class="modal-body">
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary employee-modal-close-btn" data-bs-dismiss="modal">Close</button>
-                      <button id="employeeEdit" type="button" class="btn btn-primary">Edit</button>
-                      <button id="employeeSubmit" type="button" class="btn btn-primary">Submit</button>
-                    </div>
-                  </div>
-                </div>
-      </div>
+      <div id="directoryModal" class="modal"></div>
+      <div id="confirmUpdateModal" class="modal"></div>
+      <div id="confirmDeleteModal" class="modal"></div>
+      <div id="validationModal" class="modal"></div>
+      <!--change confirmUpdateModal to confirmationModal, delete confirmDeleteModal and use confirmationModal instead-->
 
-      <div id="saveConfirmation" class="modal" tabindex="-1">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">Save changes</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <p>Are you sure you want to save your changes?</p>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                      <button id="saveChanges" type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                  </div>
-                </div>
-      </div>
-
-      <div id="updateStatus" class="modal" tabindex="-1">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">Update Status</h5>
-                      <button id='updateStatusClsBtn' type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div id='statusBody' class="modal-body">
-                    </div>
-                    <div class="modal-footer">
-                    </div>
-                  </div>
-                </div>
-      </div>
+   
               
               
 

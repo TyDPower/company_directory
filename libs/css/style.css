@@ -19,3 +19,15 @@
 .filter-head {
     font-weight: 600 !important;
 }
+
+#confModal .btn {
+    display: none;
+}
+
+.directory-items:hover {
+    cursor: pointer;
+}
+
+.boldText {
+    font-weight: bold;
+}

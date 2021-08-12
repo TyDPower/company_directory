@@ -35,11 +35,11 @@
 	// SQL statement accepts parameters and so is prepared to avoid SQL injection.
 	// $_REQUEST used for development / debugging. Remember to change to $_POST for production
 
-	$employee = $_REQUEST["data"];
+	$personnel = $_REQUEST["obj"];
 
 	$query = $conn->prepare('UPDATE personnel SET firstName = ?, lastName = ?, jobTitle = ?, email = ?, departmentID = ? WHERE id = ?');
 	
-	$query->bind_param("ssssii", $employee["fname"], $employee["lname"], $employee["jobTitle"], $employee["email"], $employee['departmentID'], $employee["id"]);
+	$query->bind_param("ssssii", $personnel["fname"], $personnel["lname"], $personnel["jobTitle"], $personnel["email"], $personnel['depID'], $personnel["id"]);
 
 
 	$query->execute();
@@ -50,9 +50,9 @@
 		$output['status']['name'] = "executed";
 		$output['status']['description'] = "query failed";	
 
-		mysqli_close($conn);
+		echo json_encode($output);
 
-		echo json_encode($output); 
+		mysqli_close($conn); 
 
 		exit;
 

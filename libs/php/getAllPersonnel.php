@@ -30,13 +30,13 @@
 
 		exit;
 
-	}	
+	};
 
-	// SQL does not accept parameters and so is not prepared
-
-	$query = 'SELECT lastName, firstName, id FROM personnel ORDER BY lastName, firstName';
-
+	$query = 'SELECT p.id, p.lastName, p.firstName, p.jobTitle, p.email, d.name as department, l.name as location FROM personnel p LEFT JOIN department d ON (d.id = p.departmentID) LEFT JOIN location l ON (l.id = d.locationID) ORDER BY lastName';
+		
 	$result = $conn->query($query);
+
+
 	
 	if (!$result) {
 
@@ -69,6 +69,6 @@
 	
 	mysqli_close($conn);
 
-	echo json_encode($output); 
+	echo json_encode($output);
 
 ?>

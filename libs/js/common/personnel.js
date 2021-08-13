@@ -76,7 +76,7 @@ export const newRecordModal = (deps) => {
     $('#depSlc').on('change', ()=> {
             let id = $('#depSlc').val();
             $.ajax({
-                url: './libs/php/getLocationByDepID.php',
+                url: './libs/php/locations/getLocationByDepID.php',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -156,7 +156,7 @@ const getRecord = (id) => {
     return new Promise((resolve, reject) => {
         if (id) {
             $.ajax({
-                url: './libs/php/getAll.php',
+                url: './libs/php/personnel/getAllPersonnelInfo.php',
                 type: "post",
                 dataType: "json",
                 data: {
@@ -313,7 +313,7 @@ const editModal = (deps, obj) => {
     $('#depSlc').on('change', ()=> {
             let id = $('#depSlc').val();
             $.ajax({
-                url: './libs/php/getLocationByDepID.php',
+                url: './libs/php/locations/getLocationByDepID.php',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -475,7 +475,7 @@ const confirmUpdateModal = (valid) => {
 const updateRecord = (obj) => {
     return new Promise((resolve, reject)=> {
         $.ajax({
-            url: './libs/php/updatePersonnel.php',
+            url: './libs/php/personnel/updatePersonnel.php',
             type: 'post',
             dataType: 'json',
             data: {
@@ -497,7 +497,7 @@ const updateRecord = (obj) => {
 const deleteRecord = (obj) => {
     return new Promise((resolve, reject)=> {
         $.ajax({
-            url: './libs/php/deletePersonnelByID.php',
+            url: './libs/php/personnel/deletePersonnelByID.php',
             type: 'post',
             dataType: 'json',
             data: {
@@ -519,7 +519,7 @@ const deleteRecord = (obj) => {
 const newRecord = (obj) => {
     return new Promise((resolve, reject)=> {
         $.ajax({
-            url: './libs/php/insertPersonnel.php',
+            url: './libs/php/personnel/insertPersonnel.php',
             type: 'post',
             dataType: 'json',
             data: {
@@ -580,8 +580,8 @@ const confirmNewRecordModal = (valid) => {
         newRecord(record)
         .then(()=> displayRecords(filter))
         .catch((err)=> console.error(err));
-        $('#confirmUpdateModalTitle').html('Personnel Record Updated');
-        $('#confirmUpdateModalBody').html('<p>Your changes have been updated.</p>');
+        $('#confirmUpdateModalTitle').html('New Personnel Record Created');
+        $('#confirmUpdateModalBody').html(`<p>Record for ${record.fname} ${record.lname} has been created.</p>`);
         $('#confirmUpdateModalSave').hide();
         $('#confirmUpdateModalCancel').hide();
         setTimeout(()=> {
@@ -646,15 +646,19 @@ const getAllRecords = (filterObj) => {
 
         let url;
 
-        if (filterObj.isFiltered) {            
-            if (filterObj.locations > 0 || filterObj.departments > 0) {
-                url = './libs/php/filterBy.php';
+        if (filterObj.isFiltered) {       
+            if (filterObj.locations.length > 0 && filterObj.departments.length > 0) {
+                url = './libs/php/personnel/filterPersonnelByDepAndLoc.php';
+            } else if (filterObj.locations.length > 0) {
+                url = './libs/php/personnel/filterPersonnelByLoc.php';
+            } else if (filterObj.departments.length > 0) {
+                url = './libs/php/personnel/filterPersonnelByDep.php';
             } else {
-                url = './libs/php/sortBy.php';
+                url = './libs/php/personnel/sortPersonnelBy.php';
             }
         } else {
-            url = './libs/php/getAllPersonnel.php';
-        }
+            url = './libs/php/personnel/getAllPersonnel.php';
+        };
 
 
         $.ajax({
@@ -679,33 +683,37 @@ const getAllRecords = (filterObj) => {
 
 };
 
-const displayAllPersonnel = (data) => {
+export const displayAllPersonnel = (data) => {
+
     filter.directory = 'personnel';
+
     $('#directoryTable').html(`
         <thead>
             <tr>
                 <th scope='col'>ID <i class="fas fa-sort"></i></th>
                 <th scope='col'>Last Name <i class="fas fa-sort"></i></th>
                 <th scope='col'>First Name <i class="fas fa-sort"></i></th>
-                <th scope='col'>Email <i class="fas fa-sort"></i></th>
-                <th scope='col'>Job Title <i class="fas fa-sort"></i></th>
-                <th scope='col'>Department <i class="fas fa-sort"></i></th>
-                <th scope='col'>Location <i class="fas fa-sort"></i></th>
+                <th scope='col' class='d-none d-lg-table-cell'>Email <i class="fas fa-sort"></i></th>
+                <th scope='col' class='d-none d-lg-table-cell'>Job Title <i class="fas fa-sort jt"></i></th>
+                <th scope='col' class='d-none d-lg-table-cell'>Department <i class="fas fa-sort dp"></i></th>
+                <th scope='col' class='d-none d-lg-table-cell'>Location <i class="fas fa-sort lc"></i></th>
             </tr>
         </thead>
         <tbody id='directoryRecords'></tbody>
     `)
 
+    if (data.length > 0) {
+
     $.each(data, (i, d)=> {
         $('#directoryRecords').append(`
             <tr class='directory-items'>
                 <td id='id'>${d.id}</td>
-                <td class='lastName'>${d.lastName}</td>
+                <td>${d.lastName}</td>
                 <td>${d.firstName}</td>
-                <td>${d.email}</td>
-                <td>${d.jobTitle}</td>
-                <td>${d.department}</td>
-                <td>${d.location}</td>
+                <td class='d-none d-lg-table-cell'>${d.email}</td>
+                <td class='d-none d-lg-table-cell'>${d.jobTitle}</td>
+                <td class='d-none d-lg-table-cell'>${d.department}</td>
+                <td class='d-none d-lg-table-cell'>${d.location}</td>
             </tr>
         `)
     });
@@ -717,5 +725,20 @@ const displayAllPersonnel = (data) => {
         .then((obj)=> displayModal(obj))
         .catch((err)=> console.error(err));
     });
+
+    } else {
+        $('#directoryRecords').html(`
+            <tr class='directory-items'>
+                <td id='id'></td>
+                <td></td>
+                <td></td>
+                <td>No records found!</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        `);
+    };
+    
 };
 

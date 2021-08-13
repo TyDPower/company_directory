@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
         <title>Compnay Directory</title>
-        <link rel="icon" sizes="192x192" href="">
+        <link rel="icon" sizes="192x192" href="./libs/img/book-solid.svg">
         <link rel="stylesheet" href="./libs/css/style.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" 
                 integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
@@ -39,27 +39,14 @@
               <li class="nav-item">
                 <span id='navAddNew' class="nav-link"><i class="fas fa-plus"></i> Add New</span>
               </li>
-              <li class="nav-item dropdown">
-                <span class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-filter"></i>
-                  Filter/Sort
-                </span>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li><span class="dropdown-item filter-head" >Sort Records</span></li>
-                  <li><span id='sortLast' class="dropdown-item" >Last Name</span></li>
-                  <li><span id='sortFirst' class="dropdown-item" >First Name</span></li>
-                  <li><span id='sortID' class="dropdown-item" >Employee ID</span></li>
-                  <li><span id='sortDep' class="dropdown-item" >Department</span></li>
-                  <li><span id='sortLoc' class="dropdown-item" >Location</span></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><span class="dropdown-item filter-head">Filter Records</span></li>
-                  <li><span id='filterLoc' class="dropdown-item" >By Location</span></li>
-                  <li><span id='filterDep' class="dropdown-item" >By Department</span></li>
-                </ul>
+              <li class="nav-item">
+                <span id='navFilter' class="nav-link"><i class="fas fa-filter"></i>
+                  Filter/Sort</span>
               </li>
             </ul>
             <form class="d-flex">
-              <input class="form-control me-2" type="search" placeholder="Search by Name or ID" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
+              <input id='searchInput' class="form-control me-2"  placeholder="Last name, ID or email" aria-label="Search">
+              <button id='searchBtn' class="btn btn-outline-success" type="button">Search</button>
             </form>
           </div>
         </div>
@@ -67,10 +54,13 @@
 
       <table id='directoryTable' class="table table-hover"></table>
 
+      <!--<button id='sql' type="button" class="btn btn-danger">Danger</button>-->
+
       <div id="directoryModal" class="modal"></div>
       <div id="confirmUpdateModal" class="modal"></div>
       <div id="confirmDeleteModal" class="modal"></div>
       <div id="validationModal" class="modal"></div>
+      <div id='filterModal' class="modal"></div>
       <!--change confirmUpdateModal to confirmationModal, delete confirmDeleteModal and use confirmationModal instead-->
 
    

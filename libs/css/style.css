@@ -1,27 +1,5 @@
-.list-group-item:hover {
-    background-color: rgba(236, 236, 236, 1);
-    cursor: pointer;
-}
-
-.floatRight {
-    text-align: right;
-}
-
-.invalidText {
-    color: red;
-    font-style: italic;
-}
-
 .nav-item:hover {
     cursor: pointer;
-}
-
-.filter-head {
-    font-weight: 600 !important;
-}
-
-#confModal .btn {
-    display: none;
 }
 
 .directory-items:hover {
@@ -30,4 +8,19 @@
 
 .boldText {
     font-weight: bold;
+}
+
+#depFilterOptions {
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+#locFilterOptions {
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+.btn-container {
+    padding: 10px;
+    float: right;
 }

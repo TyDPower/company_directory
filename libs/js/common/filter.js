@@ -1,8 +1,8 @@
 export var filter = {
-    isFiltered: true,
-    orderBy: 'firstName',
+    isFiltered: false,
+    orderBy: 'lastName',
     ascOrDsc: 'ASC',
     locations: [],
     departments: [],
     directory: null
-}
+};

@@ -4,9 +4,9 @@ import * as locations from './common/locations.js';
 import { filter } from './common/filter.js';
 
 // HTTP TO HTTPS REdirect
-//if (window.location.protocol == 'http:') {
-//    window.location.href = window.location.href.replace('http:', 'https:');
-//};
+if (window.location.protocol == 'http:') {
+    window.location.href = window.location.href.replace('http:', 'https:');
+};
 
 // Preloader
 const preloader = () => {
@@ -79,14 +79,9 @@ $('#navFilter').on('click', ()=> {
 
 $('#searchBtn').on('click', ()=> {
     let val = $('#searchInput').val();
-    let isNum = /\d/;
 
     if (val.includes('@')) {
         search('email', val)
-        .then((d)=> personnel.displayAllPersonnel(d))
-        .catch((e)=> console.error(e));
-    } else if (isNum.test(val)) {
-        search('num', parseInt(val))
         .then((d)=> personnel.displayAllPersonnel(d))
         .catch((e)=> console.error(e));
     } else {
@@ -94,6 +89,11 @@ $('#searchBtn').on('click', ()=> {
         .then((d)=> personnel.displayAllPersonnel(d))
         .catch((e)=> console.error(e));
     };
+});
+
+$('#navRefresh').on('click', ()=> {
+    clearFilters(filter);
+    personnel.displayRecords(filter);
 });
 
 // Functions
@@ -441,34 +441,33 @@ const search = (searchType, searchVal) => {
 
     if (searchType === 'email') {
         url = './libs/php/personnel/searchAllPersonnelByEmail.php';
-    } else if (searchType === 'num') {
-        url = './libs/php/personnel/searchAllPersonnelByID.php';
     } else {
         url = './libs/php/personnel/searchAllPersonnelByLastName.php';
     };
 
     return new Promise((resolve, reject) => {
-        if (id) {
-            $.ajax({
-                url: url,
-                type: "post",
-                dataType: "json",
-                data: {
-                    searchVal: searchVal
-                },
-            
-                success: (res)=> {
-                    if (res.status.name == 'ok') {
-                        resolve(res.data);
-                    };
-                    reject(res.status);
-                },
-            
-                error: (err)=> {
-                    reject(err);
-                }
-            })
-        } 
+        //if (id) {
+        //} 
+
+        $.ajax({
+            url: url,
+            type: "post",
+            dataType: "json",
+            data: {
+                searchVal: searchVal
+            },
+        
+            success: (res)=> {
+                if (res.status.name == 'ok') {
+                    resolve(res.data);
+                };
+                reject(res.status);
+            },
+        
+            error: (err)=> {
+                reject(err);
+            }
+        })
     })
 
 };

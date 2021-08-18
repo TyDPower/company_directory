@@ -24,7 +24,7 @@
 
 	};
 
-	$query = 'SELECT d.id, d.name, l.name as location FROM department d LEFT JOIN location l ON (d.locationID = l.id) ORDER BY d.name';
+	$query = 'SELECT d.id, d.name, COUNT(p.id) as pc, l.name as location FROM department d LEFT JOIN personnel p ON (p.departmentID = d.id) LEFT JOIN location l ON (d.locationID = l.id) group BY d.name order by d.name';
 		
 	$result = $conn->query($query);
 

@@ -25,7 +25,7 @@
 	}
 
 	$azArr = array('DESC', 'ASC');
-	$orderArr = array('name', 'id', 'location');
+	$orderArr = array('name', 'location');
 
     $order = $_POST['filter']['orderBy'];
 	if (!in_array($order, $orderArr)) {
@@ -37,7 +37,7 @@
 		$az = 'ASC';
 	};
 
-	$query = $conn->prepare("SELECT d.id, d.name, l.name as location FROM department d LEFT JOIN location l ON (d.LocationID = l.id) ORDER BY $order $az");
+	$query = $conn->prepare("SELECT d.id, d.name, COUNT(p.id) as pc, l.name as location FROM department d LEFT JOIN personnel p ON (p.departmentID = d.id) LEFT JOIN location l ON (d.LocationID = l.id) GROUP BY d.name ORDER BY $order $az");
 
 	//$query->bind_param('ss', $order, $az); //CANT GET WORKING!!
 	$query->execute();

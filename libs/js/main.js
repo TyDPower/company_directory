@@ -136,7 +136,6 @@ const personnelFilterModal = () => {
                         <select id='orderBy' class="form-select">
                             <option value="lastName" selected>Last Name</option>
                             <option value="firstName">First Name</option>
-                            <option value="id">Personnel ID</option>
                             <option value="department">Department</option>
                             <option value="location">Location</option>
                         </select>
@@ -150,8 +149,8 @@ const personnelFilterModal = () => {
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id='filterModalReset' type="button" class="btn btn-secondary">Reset</button>
-                    <button id='filterModalFilter' type="button" class="btn btn-primary">Filter</button>
+                    <button id='filterModalFilter' type="button" class="btn btn-dark"><i class="fas fa-check-circle"></i></button>
+                    <button id='filterModalReset' type="button" class="btn btn-dark"><i class="fas fa-ban"></i></button>
                 </div>
             </div>
         </div>
@@ -186,6 +185,8 @@ const personnelFilterModal = () => {
         });
     })
     .catch((err)=> console.error(err));
+
+    $('select').addClass("form-control");
 
     $('#filterModalReset').on('click', ()=> {
         filter.isFiltered = false;
@@ -250,23 +251,21 @@ const deparmentFilterModal = () => {
                 <div id='filterModalBody' class="modal-body">
                     <div class="d-grid gap-2">
                         <h5>Filter by</h5>
-
                         <button class="btn btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#locFilter"aria-expanded="false" aria-controls="collapseExample">
-                            Departments
+                            Locations
                         </button>
                         <div class="collapse" id="locFilter">
-                            <div id='depFilterOptions' class="card card-body">
+                            <div id='locFilterOptions' class="card card-body">
                             </div>
                             <div class='btn-container'>
-                                <button id='depAll' type="button" class="btn btn-outline-dark">Select All</button>
-                                <button id='depClr' type="button" class="btn btn-outline-dark">Clear All</button>
+                                <button id='locAll' type="button" class="btn btn-outline-dark">Select All</button>
+                                <button id='locClr' type="button" class="btn btn-outline-dark">Clear All</button>
                             </div>
                         </div>
 
                         <h5>Sort by</h5>
                         <select id='orderBy' class="form-select">
                             <option value="name">Department Name</option>
-                            <option value="id">Department ID</option>
                             <option value="location">Location</option>
                         </select>
 
@@ -279,8 +278,8 @@ const deparmentFilterModal = () => {
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id='filterModalReset' type="button" class="btn btn-secondary">Reset</button>
-                    <button id='filterModalFilter' type="button" class="btn btn-primary">Filter</button>
+                    <button id='filterModalFilter' type="button" class="btn btn-dark"><i class="fas fa-check-circle"></i></button>
+                    <button id='filterModalReset' type="button" class="btn btn-dark"><i class="fas fa-ban"></i></button>
                 </div>
             </div>
         </div>
@@ -288,28 +287,30 @@ const deparmentFilterModal = () => {
 
     $('#filterModal').show();
 
-    $('#depFilterOptions').html(`<ul id='depFilterDepartments' class="list-group"></ul>`);
-    departments.getAllRecords(false)
-    .then((deps)=> {
-        $.each(deps, (i, dep)=> {
-            $('#depFilterDepartments').append(`
+    $('#locFilterOptions').html(`<ul id='locFilterLocations' class="list-group"></ul>`);
+    locations.getAllRecords(false)
+    .then((locs)=> {
+        $.each(locs, (i, l)=> {
+            $('#locFilterLocations').append(`
                 <li class="list-group-item">
-                    <input type='checkbox' name='departments' id=${dep.id} value=${dep.id}>
-                    <label from=${dep.id}>${dep.name}</label>
+                    <input type='checkbox' name='locations' id=${l.id} value=${l.id}>
+                    <label for=${l.id}>${l.name}</label>
                 </li>
             `);
         });
     })
     .catch((err)=> console.error(err));
 
-    $('#depClr').on('click', ()=> {
-        $("input[name='departments']").each(function(){
+    $('select').addClass("form-control");
+
+    $('#locClr').on('click', ()=> {
+        $("input[name='locations']").each(function(){
             this.checked = false;
         });
     });
 
-    $('#depAll').on('click', ()=> {
-        $("input[name='departments']").each(function(){
+    $('#locAll').on('click', ()=> {
+        $("input[name='locations']").each(function(){
             this.checked = true;
         });
     });
@@ -321,8 +322,8 @@ const deparmentFilterModal = () => {
 
     $('#filterModalFilter').on('click', ()=> {
 
-        $("input:checkbox[name=departments]:checked").each(function(){
-            filter.departments.push($(this).val());
+        $("input:checkbox[name=locations]:checked").each(function(){
+            filter.locations.push(parseInt($(this).val()));
         });
 
         filter.isFiltered = true;
@@ -349,11 +350,6 @@ const locationFilterModal = () => {
                 <div id='filterModalBody' class="modal-body">
                     <div class="d-grid gap-2">
                         <h5>Sort by</h5>
-                        <select id='orderBy' class="form-select">
-                            <option value="name" selected>Location Name</option>
-                            <option value="id">Location ID</option>
-                        </select>
-
                         <select id='ascOrDsc' class="form-select">
                             <option value="ASC" selected>Ascending Order</option>
                             <option value="DESC">Descending Order</option>
@@ -363,8 +359,8 @@ const locationFilterModal = () => {
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id='filterModalReset' type="button" class="btn btn-secondary">Reset</button>
-                    <button id='filterModalFilter' type="button" class="btn btn-primary">Filter</button>
+                    <button id='filterModalFilter' type="button" class="btn btn-dark"><i class="fas fa-check-circle"></i></button>
+                    <button id='filterModalReset' type="button" class="btn btn-dark"><i class="fas fa-ban"></i></button>
                 </div>
             </div>
         </div>
@@ -399,6 +395,8 @@ const locationFilterModal = () => {
         });
     })
     .catch((err)=> console.error(err));
+
+    $('select').addClass("form-control");
 
     $('#filterModalReset').on('click', ()=> {});
 

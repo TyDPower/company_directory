@@ -24,7 +24,7 @@
 
 	}	
 
-	$query = $conn->prepare('SELECT count(p.id) as pc FROM department d left join personnel p on (d.id = p.departmentID) where d.id = ?');
+	$query = $conn->prepare('SELECT count(d.id) as dc FROM location l left join department d on (l.id = d.locationID) where l.id = ?');
 
 	$query->bind_param("i", $_POST["id"]);
 
@@ -55,9 +55,9 @@
 
 	}
 
-	if ($returnedRecords[0]['pc'] <= 0) {
+	if ($returnedRecords[0]['dc'] <= 0) {
 
-		$query = $conn->prepare('DELETE FROM department WHERE id = ?');
+		$query = $conn->prepare('DELETE FROM location WHERE id = ?');
 	
 		$query->bind_param("i", $_POST['id']);
 

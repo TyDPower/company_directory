@@ -21,7 +21,7 @@ export const newRecordModal = (deps) => {
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 id='directoryModalTitle' class="modal-title"><i class="fas fa-user"></i> New Personnel Record</h5>
-                    <button id='directoryModalClose' type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close directory-modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div id='directoryModalBody' class="modal-body">
                     <table class="table table-striped">
@@ -62,7 +62,8 @@ export const newRecordModal = (deps) => {
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button id="directoryModalSubmit" type="button" class="btn btn-primary">Submit</button>
+                    <button id="directoryModalSubmit" type="button" class="btn btn-dark"><i class="fas fa-check-circle"></i></button>
+                    <button type="button" class="btn btn-dark directory-modal-close"><i class="fas fa-ban"></i></button>
                 </div>
             </div>
         </div>
@@ -130,7 +131,6 @@ export const newRecordModal = (deps) => {
         if (record.fname && record.lname && record.email && record.jobTitle) {
             if (utils.validStr(record.fname) && utils.validStr(record.lname) && utils.validStr(record.jobTitle) && utils.validEmail(record.email) && dep !== 'Select Department') {
                 isValid = true;
-                $('#directoryModal').hide();
                 confirmNewRecordModal(isValid)
             } else {
                 isValid = false;
@@ -143,7 +143,7 @@ export const newRecordModal = (deps) => {
 
     });
 
-    $('#directoryModalClose').on('click', ()=> {
+    $('.directory-modal-close').on('click', ()=> {
         $('#directoryModal').hide();
     });
 
@@ -196,14 +196,18 @@ const displayModal = (obj) => {
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 id='directoryModalTitle' class="modal-title"><i class="fas fa-user"></i> ${obj.fname} ${obj.lname}</h5>
-                    <button id='directoryModalClose' type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 id='directoryModalTitle' class="modal-title"><i class="fas fa-user"></i> Employee Record</h5>
+                    <button type="button" class="btn-close directory-modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div id='directoryModalBody' class="modal-body">
                     <table class="table table-striped">
                     <tr>
-                        <td>Employee ID</td>
-                        <td class="floatRight">${obj.id}</td>
+                        <td>First Name</td>
+                        <td class="floatRight">${obj.fname}</td>
+                    </tr>
+                    <tr>
+                        <td>Last Name</td>
+                        <td class="floatRight">${obj.lname}</td>
                     </tr>
                     <tr>
                         <td>Email</td>
@@ -224,17 +228,16 @@ const displayModal = (obj) => {
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button id='directoryModalCancel' type="button" class="btn btn-secondary close-modal dir-modal-close-btn">Close</button>
-                    <button id="directoryModalEdit" type="button" class="btn btn-primary">Edit</button>
+                    <button id="directoryModalEdit" type="button" class="btn btn-dark"><i class="fas fa-edit"></i></button>
+                    <button type="button" class="btn btn-dark directory-modal-close"><i class="fas fa-ban"></i></button>
                 </div>
             </div>
         </div>
     `);
 
     $('#directoryModal').show();
-    $('#directoryModalCancel').hide();
 
-    $('#directoryModalClose').on('click', ()=> {
+    $('.directory-modal-close').on('click', ()=> {
         $('#directoryModal').hide();
     });
 
@@ -250,15 +253,11 @@ const editModal = (deps, obj) => {
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 id='directoryModalTitle' class="modal-title"><i class="fas fa-user"></i> ${obj.fname} ${obj.lname}</h5>
-                    <button id='directoryModalClose' type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 id='directoryModalTitle' class="modal-title"><i class="fas fa-user"></i> Edit ${obj.fname} ${obj.lname}</h5>
+                    <button id='directoryModalClose' type="button" class="btn-close directory-modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div id='directoryModalBody' class="modal-body">
                     <table class="table table-striped">
-                        <tr>
-                            <td>Employee ID</td>
-                            <td class="floatRight">${obj.id}</td>
-                        </tr>
                         <tr>
                             <td>First name</td>
                             <td id="firstNameCont" class="floatRight">
@@ -296,8 +295,9 @@ const editModal = (deps, obj) => {
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button id="directoryModalDelete" type="button" class="btn btn-danger">Delete</button>
-                    <button id="directoryModalSubmit" type="button" class="btn btn-primary">Submit</button>
+                    <button id="directoryModalSubmit" type="button" class="btn btn-dark"><i class="fas fa-check-circle"></i></button>
+                    <button id="directoryModalDelete" type="button" class="btn btn-dark"><i class="fas fa-trash-alt"></i></button>
+                    <button type="button" class="btn btn-dark directory-modal-close"><i class="fas fa-ban"></i></button>
                 </div>
             </div>
         </div>
@@ -364,7 +364,7 @@ const editModal = (deps, obj) => {
 
     $('#directoryModal').show();
 
-    $('#directoryModalClose').on('click', ()=> {
+    $('.directory-modal-close').on('click', ()=> {
         $('#directoryModal').hide();
     });
 
@@ -372,7 +372,6 @@ const editModal = (deps, obj) => {
         let isValid;
         if (utils.validStr(record.fname) && utils.validStr(record.lname) && utils.validStr(record.jobTitle) && utils.validEmail(record.email)) {
             isValid = true;
-            $('#directoryModal').hide();
             confirmUpdateModal(isValid)
         } else {
             isValid = false;
@@ -381,7 +380,6 @@ const editModal = (deps, obj) => {
     });
 
     $('#directoryModalDelete').on('click', ()=> {
-        $('#directoryModal').hide();
         confirmDeleteModal(record);
     });
 };
@@ -434,8 +432,8 @@ const confirmUpdateModal = (valid) => {
             <div id='confirmUpdateModalBody' class="modal-body">
             </div>
             <div class="modal-footer">
-                <button id='confirmUpdateModalCancel' type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button id='confirmUpdateModalSave' type="button" class="btn btn-primary">Save changes</button>
+                <button id='confirmUpdateModalSave' type="button" class="btn btn-dark"><i class="fas fa-check-circle"></i></button>
+                <button id='confirmUpdateModalCancel' type="button" class="btn btn-dark" data-bs-dismiss="modal"><i class="fas fa-ban"></i></button>
             </div>
             </div>
         </div>
@@ -469,6 +467,7 @@ const confirmUpdateModal = (valid) => {
         $('#confirmUpdateModalCancel').hide();
         setTimeout(()=> {
             $('#confirmUpdateModal').hide();
+            $('#directoryModal').hide();
         }, 2000);
     });
 
@@ -557,8 +556,8 @@ const confirmNewRecordModal = (valid) => {
             <div id='confirmUpdateModalBody' class="modal-body">
             </div>
             <div class="modal-footer">
-                <button id='confirmUpdateModalCancel' type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button id='confirmUpdateModalSave' type="button" class="btn btn-primary">Save changes</button>
+                <button id='confirmUpdateModalSave' type="button" class="btn btn-dark"><i class="fas fa-check-circle"></i></button>
+                <button id='confirmUpdateModalCancel' type="button" class="btn btn-dark" data-bs-dismiss="modal"><i class="fas fa-ban"></i></button>
             </div>
             </div>
         </div>
@@ -592,6 +591,7 @@ const confirmNewRecordModal = (valid) => {
         $('#confirmUpdateModalCancel').hide();
         setTimeout(()=> {
             $('#confirmUpdateModal').hide();
+            $('#directoryModal').hide();
         }, 2000);
     });
 
@@ -614,8 +614,8 @@ const confirmDeleteModal = (obj) => {
                 <p>Do you wish to procced with deleting record <span class='boldText'>ID# ${obj.id} ${obj.lname}, ${obj.fname}?</span> This action cannot be undone.</p>
             </div>
             <div class="modal-footer">
-                <button id='confirmDeleteModalCancel' type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button id='confirmDeleteModalDelete' type="button" class="btn btn-danger">Delete</button>
+                <button id='confirmDeleteModalDelete' type="button" class="btn btn-dark"><i class="fas fa-trash-alt"></i></button>
+                <button id='confirmDeleteModalCancel' type="button" class="btn btn-dark" data-bs-dismiss="modal"><i class="fas fa-ban"></i></button>
             </div>
             </div>
         </div>
@@ -631,14 +631,12 @@ const confirmDeleteModal = (obj) => {
         $('#confirmDeleteModalCancel').hide();
         setTimeout(()=> {
             $('#confirmDeleteModal').hide();
+            $('#directoryModal').hide();
         }, 2000);
     });
 
     $('#confirmDeleteModalCancel').on('click', ()=> {
         $('#confirmDeleteModal').hide();
-        getAllDepartments()
-        .then((data)=> editModal(data, record))
-        .catch((err)=> console.error(err));
     });
 
     $('#confirmDeleteModalClose').on('click', ()=> {
@@ -694,17 +692,17 @@ export const displayAllPersonnel = (data) => {
     filter.directory = 'personnel';
 
     $('#directoryTable').html(`
-        <thead>
+        <thead class='sticky-header'>
             <tr>
-                <th scope='col' class='d-none d-lg-table-cell'>ID</th>
-                <th scope='col' class='d-none d-lg-table-cell'>Last Name</th>
-                <th scope='col' class='d-none d-lg-table-cell'>First Name</th>
+                <th scope='col' class='id'>ID</th>
+                <th scope='col' class='d-lg-table-cell'>Last Name</th>
+                <th scope='col' class='d-lg-table-cell'>First Name</th>
                 <th scope='col' class='d-none d-lg-table-cell'>Email</th>
                 <th scope='col' class='d-none d-lg-table-cell'>Job Title</th>
                 <th scope='col' class='d-none d-lg-table-cell'>Department</th>
                 <th scope='col' class='d-none d-lg-table-cell'>Location</th>
-                <th scope='col' class='d-none d-lg-table-cell text-center'>Edit</th>
-                <th scope='col' class='d-none d-lg-table-cell text-center'>Delete</th>
+                <th scope='col' class='d-lg-table-cell text-center'>Edit</th>
+                <th scope='col' class='d-lg-table-cell text-center'>Delete</th>
             </tr>
         </thead>
         <tbody id='directoryRecords'></tbody>
@@ -715,23 +713,24 @@ export const displayAllPersonnel = (data) => {
     $.each(data, (i, d)=> {
         $('#directoryRecords').append(`
             <tr class='directory-items'>
-                <td id='id' class='d-none d-lg-table-cell'>${d.id}</td>
-                <td class='d-none d-lg-table-cell'>${d.lastName}</td>
-                <td class='d-none d-lg-table-cell'>${d.firstName}</td>
+                <td class='id'>${d.id}</td>
+                <td class='d-lg-table-cell'>${d.lastName}</td>
+                <td class='d-lg-table-cell'>${d.firstName}</td>
                 <td class='d-none d-lg-table-cell'>${d.email}</td>
                 <td class='d-none d-lg-table-cell'>${d.jobTitle}</td>
                 <td class='d-none d-lg-table-cell'>${d.department}</td>
                 <td class='d-none d-lg-table-cell'>${d.location}</td>
-                <td id='edit' class='d-none d-lg-table-cell text-center'><i class="fas fa-edit"></i></td>
-                <td class='d-none d-lg-table-cell text-center'><i class="fas fa-trash-alt"></i></td>
+                <td class='d-lg-table-cell text-center'><i class="fas fa-edit"></i></td>
+                <td class='d-lg-table-cell text-center'><i class="fas fa-trash-alt"></i></td>
             </tr>
         `)
     });
 
+    $('.id').hide();
+
     $('.directory-items').on('click', (e)=> {
         let parent = $(e.target).closest('tr');
-        let id = parent.find('#id').html();
-        console.log(id);
+        let id = parent.find('.id').html();
         getRecord(id)
         .then((obj)=> displayModal(obj))
         .catch((err)=> console.error(err));
@@ -740,7 +739,7 @@ export const displayAllPersonnel = (data) => {
     } else {
         $('#directoryRecords').html(`
             <tr class='directory-items'>
-                <td id='id'></td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td>No records found!</td>

@@ -25,10 +25,10 @@
 	}	
 
 	$azArr = array('DESC', 'ASC');
-	$orderArr = array('name', 'id', 'location');
+	$orderArr = array('name', 'location');
 	
-	if (count($_POST['filter']['departments'] ) > 0) {
-		$deps = $_POST['filter']['departments'];
+	if (count($_POST['filter']['locations'] ) > 0) {
+		$deps = $_POST['filter']['locations'];
 
 		$depsCount = str_repeat('?, ', count($deps) - 1) . '?';
 		$az = $_POST['filter']['ascOrDsc'];
@@ -38,12 +38,12 @@
 		};
 		$order = $_POST['filter']['orderBy'];
 		if (!in_array($order, $orderArr)) {
-			$order = 'lastName';
+			$order = 'name';
 		};
 
 		$query = null;
 
-		$query = $conn->prepare("SELECT d.id, d.name, l.name as location FROM department d LEFT JOIN location l ON (d.LocationID = l.id) where d.id in ($depsCount) ORDER BY $order $az");
+		$query = $conn->prepare("SELECT d.id, d.name, l.name as location, COUNT(p.id) as pc FROM department d LEFT JOIN personnel p ON (d.id = p.departmentID) LEFT JOIN location l ON (d.LocationID = l.id) where l.id in ($depsCount) GROUP BY d.name ORDER BY $order $az");
 
 		$types = str_repeat('i', count($deps));
 		$query->bind_param($types, ...$deps);

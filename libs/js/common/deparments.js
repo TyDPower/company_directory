@@ -84,6 +84,9 @@ export const newRecordModal = (locs) => {
         $('#directoryModal').hide();
     });
 
+    $('input').addClass("form-control");
+    $('select').addClass("form-control");
+
     $('#directoryModalSubmit').on('click', ()=> {
         let isValid;
         if (utils.validStr(record.name) && record.locID) {
@@ -261,6 +264,9 @@ const editModal = (locs, obj) => {
             confirmUpdateModal(isValid)
         }
     });
+
+    $('input').addClass("form-control");
+    $('select').addClass("form-control");
 
     $('#directoryModalDelete').hide();
     $('#directoryModalDelete').on('click', ()=> {

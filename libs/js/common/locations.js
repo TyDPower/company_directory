@@ -140,6 +140,9 @@ export const newRecordModal = (locs) => {
         $('#directoryModal').hide();
     });
 
+    $('input').addClass("form-control");
+    $('select').addClass("form-control");
+
     $('#directoryModalSubmit').on('click', ()=> {
         let isValid;
         if (utils.validStr(record.name)) {
@@ -280,6 +283,9 @@ const editModal = (obj) => {
             confirmUpdateModal(isValid)
         }
     });
+
+    $('input').addClass("form-control");
+    $('select').addClass("form-control");
     
     $('#directoryModalDelete').hide();
     $('#directoryModalDelete').on('click', ()=> {

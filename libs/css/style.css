@@ -74,3 +74,14 @@
         transform: rotate(360deg);
     }
 }
+
+.active {
+    font-weight: bolder !important;
+}
+
+.sticky-header {
+    position: sticky;
+    top: 55px;
+    color: white;
+    background-color: black;
+}

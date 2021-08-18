@@ -121,6 +121,9 @@ export const newRecordModal = (deps) => {
 
     $('#directoryModal').show();
 
+    $('input').addClass("form-control");
+    $('select').addClass("form-control");
+
     $('#directoryModalSubmit').on('click', ()=> {
         let dep = $('#depSlc').val()
         let isValid;
@@ -226,7 +229,7 @@ const displayModal = (obj) => {
                 </div>
             </div>
         </div>
-    `)
+    `);
 
     $('#directoryModal').show();
     $('#directoryModalCancel').hide();
@@ -298,7 +301,7 @@ const editModal = (deps, obj) => {
                 </div>
             </div>
         </div>
-    `)
+    `);
 
     $.each(deps, (i, dep)=> {
             $('#depSlc').append(`<option value=${dep.id}>${dep.name}</option>`);
@@ -355,6 +358,9 @@ const editModal = (deps, obj) => {
             validationModal('email');
         }
     });
+
+    $('input').addClass("form-control");
+    $('select').addClass("form-control");
 
     $('#directoryModal').show();
 
@@ -690,13 +696,15 @@ export const displayAllPersonnel = (data) => {
     $('#directoryTable').html(`
         <thead>
             <tr>
-                <th scope='col'>ID <i class="fas fa-sort"></i></th>
-                <th scope='col'>Last Name <i class="fas fa-sort"></i></th>
-                <th scope='col'>First Name <i class="fas fa-sort"></i></th>
-                <th scope='col' class='d-none d-lg-table-cell'>Email <i class="fas fa-sort"></i></th>
-                <th scope='col' class='d-none d-lg-table-cell'>Job Title <i class="fas fa-sort jt"></i></th>
-                <th scope='col' class='d-none d-lg-table-cell'>Department <i class="fas fa-sort dp"></i></th>
-                <th scope='col' class='d-none d-lg-table-cell'>Location <i class="fas fa-sort lc"></i></th>
+                <th scope='col' class='d-none d-lg-table-cell'>ID</th>
+                <th scope='col' class='d-none d-lg-table-cell'>Last Name</th>
+                <th scope='col' class='d-none d-lg-table-cell'>First Name</th>
+                <th scope='col' class='d-none d-lg-table-cell'>Email</th>
+                <th scope='col' class='d-none d-lg-table-cell'>Job Title</th>
+                <th scope='col' class='d-none d-lg-table-cell'>Department</th>
+                <th scope='col' class='d-none d-lg-table-cell'>Location</th>
+                <th scope='col' class='d-none d-lg-table-cell text-center'>Edit</th>
+                <th scope='col' class='d-none d-lg-table-cell text-center'>Delete</th>
             </tr>
         </thead>
         <tbody id='directoryRecords'></tbody>
@@ -707,13 +715,15 @@ export const displayAllPersonnel = (data) => {
     $.each(data, (i, d)=> {
         $('#directoryRecords').append(`
             <tr class='directory-items'>
-                <td id='id'>${d.id}</td>
-                <td>${d.lastName}</td>
-                <td>${d.firstName}</td>
+                <td id='id' class='d-none d-lg-table-cell'>${d.id}</td>
+                <td class='d-none d-lg-table-cell'>${d.lastName}</td>
+                <td class='d-none d-lg-table-cell'>${d.firstName}</td>
                 <td class='d-none d-lg-table-cell'>${d.email}</td>
                 <td class='d-none d-lg-table-cell'>${d.jobTitle}</td>
                 <td class='d-none d-lg-table-cell'>${d.department}</td>
                 <td class='d-none d-lg-table-cell'>${d.location}</td>
+                <td id='edit' class='d-none d-lg-table-cell text-center'><i class="fas fa-edit"></i></td>
+                <td class='d-none d-lg-table-cell text-center'><i class="fas fa-trash-alt"></i></td>
             </tr>
         `)
     });
@@ -721,6 +731,7 @@ export const displayAllPersonnel = (data) => {
     $('.directory-items').on('click', (e)=> {
         let parent = $(e.target).closest('tr');
         let id = parent.find('#id').html();
+        console.log(id);
         getRecord(id)
         .then((obj)=> displayModal(obj))
         .catch((err)=> console.error(err));

@@ -8,6 +8,13 @@ import { filter } from './common/filter.js';
 //    window.location.href = window.location.href.replace('http:', 'https:');
 //};
 
+// Preloader
+const preloader = () => {
+    $('#preloader').fadeOut();
+};
+
+window.onload = preloader;
+
 // Display personnel records as default
 personnel.displayRecords(filter);
 

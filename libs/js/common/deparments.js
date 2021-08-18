@@ -156,7 +156,7 @@ const displayModal = (obj) => {
                 <div id='directoryModalBody' class="modal-body">
                     <table class="table table-striped">
                     <tr>
-                        <td>Department Name</td>
+                        <td>Name</td>
                         <td class="floatRight">${obj.name}</td>
                     </tr>
                     <tr>
@@ -216,7 +216,6 @@ const editModal = (locs, obj) => {
                 </div>
                 <div class="modal-footer">
                     <button id="directoryModalSubmit" type="button" class="btn btn-dark"><i class="fas fa-check-circle"></i></button>
-                    <button id="directoryModalDelete" type="button" class="btn btn-dark"><i class="fas fa-trash-alt"></i></button>
                     <button type="button" class="btn btn-dark directory-modal-close"><i class="fas fa-ban"></i></button>
                 </div>
             </div>
@@ -264,10 +263,6 @@ const editModal = (locs, obj) => {
 
     $('input').addClass("form-control");
     $('select').addClass("form-control");
-
-    $('#directoryModalDelete').on('click', ()=> {
-        confirmDeleteModal(record);
-    });
 };
 
 const validationModal = (type) => {
@@ -348,7 +343,7 @@ const confirmUpdateModal = (valid) => {
         .then(()=> displayRecords(filter))
         .catch((err)=> console.error(err));
         $('#confirmUpdateModalTitle').html('Department Record Updated');
-        $('#confirmUpdateModalBody').html('<p>Your changes have been updated.</p>');
+        $('#confirmUpdateModalBody').html('<p>Your changes have been Saved.</p>');
         $('#confirmUpdateModalSave').hide();
         $('#confirmUpdateModalCancel').hide();
         setTimeout(()=> {
@@ -489,8 +484,6 @@ const confirmNewRecordModal = (valid) => {
 const confirmDeleteModal = (obj) => {
     $('#confirmDeleteModal').show();
 
-    console.log(obj)
-
     if (obj.count > 0) {
 
         $('#confirmDeleteModal').html(`
@@ -520,7 +513,8 @@ const confirmDeleteModal = (obj) => {
                     <button id='confirmDeleteModalClose' type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div id='confirmDeleteModalBody' class="modal-body">
-                    <p>Do you wish to procced with deleting department <span class='boldText'>${obj.name}?</span> This action cannot be undone.</p>
+                    <p>Do you wish to procced with deleting department <span class='boldText'>${obj.name}?</span></p>
+                    <p>This action cannot be undone.</p>
                 </div>
                 <div class="modal-footer">
                     <button id='confirmDeleteModalDelete' type="button" class="btn btn-dark"><i class="fas fa-check-circle"></i></button>
@@ -532,7 +526,7 @@ const confirmDeleteModal = (obj) => {
     };
 
     $('#confirmDeleteModalDelete').on('click', ()=> {
-        deleteRecord(record)
+        deleteRecord(obj)
         .then(()=> displayRecords(filter))
         .catch((err)=> console.error(err));
         $('#confirmDeleteModalTitle').html('Personnel Record Deleted');
@@ -579,8 +573,6 @@ export const getAllRecords = (filterObj) => {
             },
             success: (res)=> {
                 if (res.status.name == 'ok') {
-                    console.log(res.data)
-                    console.log(filterObj.locations)
                     resolve(res.data);
                 }
                 reject(res.status);
@@ -600,9 +592,12 @@ const displayAllDepartments = (data) => {
         <thead class='sticky-header'>
             <tr>
                 <th class='id' scope='col'>ID</th>
-                <th scope='col'>Department Name</th>
-                <th scope='col'>Personnel Count</th>
+                <th scope='col'>Name</th>
+                <th scope='col' class='d-none d-lg-table-cell'>Personnel Count</th>
                 <th scope='col'>Location</th>
+                <th scope='col' class='d-sm-table-cell d-lg-none text-center'>View</th>
+                <th scope='col' class='d-none d-lg-table-cell text-center'>Edit</th>
+                <th scope='col' class='d-lg-table-cell text-center'>Delete</th>
             </tr>
         </thead>
         <tbody id='directoryRecords'></tbody>
@@ -612,19 +607,56 @@ const displayAllDepartments = (data) => {
         $('#directoryRecords').append(`
             <tr class='directory-items'>
                 <td class='id'>${d.id}</td>
-                <td>${d.name}</td>
-                <td>${d.pc}</td>
+                <td class='name'>${d.name}</td>
+                <td class='d-none d-lg-table-cell pc'>${d.pc}</td>
                 <td>${d.location}</td>
+                <td class='d-sm-table-cell d-lg-none text-center view-btn'><i class="fas fa-eye"></i></i></td>
+                <td class='d-none d-lg-table-cell text-center edit-btn'><i class="fas fa-edit"></i></td>
+                <td class='d-lg-table-cell text-center delete-btn'><i class="fas fa-trash-alt"></i></td>
             </tr>
         `)
     });
 
-    $('.directory-items').on('click', (e)=> {
+    /*$('.directory-items').on('click', (e)=> {
         let parent = $(e.target).closest('tr');
         let id = parent.find('.id').html();
         getRecord(id)
         .then((obj)=> displayModal(obj))
         .catch((err)=> console.error(err));
+    });*/
+
+    $('.view-btn').on('click', (e)=> {
+        let parent = $(e.target).closest('tr');
+        let id = parent.find('.id').html();
+
+        getRecord(id)
+        .then((obj)=> displayModal(obj))
+        .catch((err)=> console.error(err));
+    });
+
+    $('.edit-btn').on('click', (e)=> {
+        let parent = $(e.target).closest('tr');
+        let id = parent.find('.id').html();
+        let deps;
+
+        getAllLocations()
+        .then((data)=> deps = data)
+        .then(()=> {
+            getRecord(id)
+            .then((obj)=> editModal(deps, obj))
+            .catch((err)=> console.error(err));
+        })
+        .catch((e)=> console.error(e));
+    });
+
+    $('.delete-btn').on('click', (e)=> {
+        let parent = $(e.target).closest('tr');
+        let em = {
+            id: parent.find('.id').html(),
+            name: parent.find('.name').html(),
+            count: parent.find('.pc').html(),
+        };
+        confirmDeleteModal(em)
     });
 
     $('.id').hide();

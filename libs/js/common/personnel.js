@@ -296,7 +296,6 @@ const editModal = (deps, obj) => {
                 </div>
                 <div class="modal-footer">
                     <button id="directoryModalSubmit" type="button" class="btn btn-dark"><i class="fas fa-check-circle"></i></button>
-                    <button id="directoryModalDelete" type="button" class="btn btn-dark"><i class="fas fa-trash-alt"></i></button>
                     <button type="button" class="btn btn-dark directory-modal-close"><i class="fas fa-ban"></i></button>
                 </div>
             </div>
@@ -377,10 +376,6 @@ const editModal = (deps, obj) => {
             isValid = false;
             confirmUpdateModal(isValid)
         }
-    });
-
-    $('#directoryModalDelete').on('click', ()=> {
-        confirmDeleteModal(record);
     });
 };
 
@@ -611,7 +606,7 @@ const confirmDeleteModal = (obj) => {
                 <button id='confirmDeleteModalClose' type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div id='confirmDeleteModalBody' class="modal-body">
-                <p>Do you wish to procced with deleting record <span class='boldText'>ID# ${obj.id} ${obj.lname}, ${obj.fname}?</span> This action cannot be undone.</p>
+                <p>Do you wish to procced with deleting record <span class='boldText'>${obj.lname}, ${obj.fname}?</span> This action cannot be undone.</p>
             </div>
             <div class="modal-footer">
                 <button id='confirmDeleteModalDelete' type="button" class="btn btn-dark"><i class="fas fa-trash-alt"></i></button>
@@ -622,7 +617,7 @@ const confirmDeleteModal = (obj) => {
     `);
 
     $('#confirmDeleteModalDelete').on('click', ()=> {
-        deleteRecord(record)
+        deleteRecord(obj)
         .then(()=> displayRecords(filter))
         .catch((err)=> console.error(err));
         $('#confirmDeleteModalTitle').html('Personnel Record Deleted');
@@ -701,7 +696,8 @@ export const displayAllPersonnel = (data) => {
                 <th scope='col' class='d-none d-lg-table-cell'>Job Title</th>
                 <th scope='col' class='d-none d-lg-table-cell'>Department</th>
                 <th scope='col' class='d-none d-lg-table-cell'>Location</th>
-                <th scope='col' class='d-lg-table-cell text-center'>Edit</th>
+                <th scope='col' class='d-sm-table-cell d-lg-none text-center'>View</th>
+                <th scope='col' class='d-none d-lg-table-cell text-center'>Edit</th>
                 <th scope='col' class='d-lg-table-cell text-center'>Delete</th>
             </tr>
         </thead>
@@ -714,26 +710,62 @@ export const displayAllPersonnel = (data) => {
         $('#directoryRecords').append(`
             <tr class='directory-items'>
                 <td class='id'>${d.id}</td>
-                <td class='d-lg-table-cell'>${d.lastName}</td>
-                <td class='d-lg-table-cell'>${d.firstName}</td>
+                <td class='d-lg-table-cell lname'>${d.lastName}</td>
+                <td class='d-lg-table-cell fname'>${d.firstName}</td>
                 <td class='d-none d-lg-table-cell'>${d.email}</td>
                 <td class='d-none d-lg-table-cell'>${d.jobTitle}</td>
                 <td class='d-none d-lg-table-cell'>${d.department}</td>
                 <td class='d-none d-lg-table-cell'>${d.location}</td>
-                <td class='d-lg-table-cell text-center'><i class="fas fa-edit"></i></td>
-                <td class='d-lg-table-cell text-center'><i class="fas fa-trash-alt"></i></td>
+                <td class='d-sm-table-cell d-lg-none text-center view-btn'><i class="fas fa-eye"></i></i></td>
+                <td class='d-none d-lg-table-cell text-center edit-btn'><i class="fas fa-edit"></i></td>
+                <td class='d-lg-table-cell text-center delete-btn'><i class="fas fa-trash-alt"></i></td>
             </tr>
         `)
     });
 
     $('.id').hide();
 
-    $('.directory-items').on('click', (e)=> {
+    /*$('.directory-items').on('click', (e)=> {
         let parent = $(e.target).closest('tr');
         let id = parent.find('.id').html();
+
         getRecord(id)
         .then((obj)=> displayModal(obj))
         .catch((err)=> console.error(err));
+    });*/
+
+    $('.view-btn').on('click', (e)=> {
+        let parent = $(e.target).closest('tr');
+        let id = parent.find('.id').html();
+
+        getRecord(id)
+        .then((obj)=> displayModal(obj))
+        .catch((err)=> console.error(err));
+    });
+
+    $('.edit-btn').on('click', (e)=> {
+        let parent = $(e.target).closest('tr');
+        let id = parent.find('.id').html();
+        let deps;
+
+        getAllDepartments()
+        .then((data)=> deps = data)
+        .then(()=> {
+            getRecord(id)
+            .then((obj)=> editModal(deps, obj))
+            .catch((err)=> console.error(err));
+        })
+        .catch((e)=> console.error(e));
+    });
+
+    $('.delete-btn').on('click', (e)=> {
+        let parent = $(e.target).closest('tr');
+        let em = {
+            id: parent.find('.id').html(),
+            lname: parent.find('.lname').html(),
+            fname: parent.find('.fname').html(),
+        };
+        confirmDeleteModal(em)
     });
 
     } else {

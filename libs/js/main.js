@@ -3,7 +3,10 @@ import * as departments from './common/deparments.js';
 import * as locations from './common/locations.js';
 import { filter } from './common/filter.js';
 
-//---------------- New Functions --------------------\\
+// HTTP TO HTTPS REdirect
+//if (window.location.protocol == 'http:') {
+//    window.location.href = window.location.href.replace('http:', 'https:');
+//};
 
 // Display personnel records as default
 personnel.displayRecords(filter);

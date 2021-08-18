@@ -58,8 +58,11 @@ const displayAllLocations = (data) => {
         <thead class='sticky-header'>
             <tr>
                 <th class='id' scope='col'>ID</th>
-                <th scope='col'>Location Name</th>
-                <th scope='col'>Department Count</th>
+                <th scope='col'>Name</th>
+                <th scope='col' class='d-none d-lg-table-cell'>Department Count</th>
+                <th scope='col' class='d-sm-table-cell d-lg-none text-center'>View</th>
+                <th scope='col' class='d-none d-lg-table-cell text-center'>Edit</th>
+                <th scope='col' class='d-lg-table-cell text-center'>Delete</th>
             </tr>
         </thead>
         <tbody id='directoryRecords'></tbody>
@@ -69,18 +72,50 @@ const displayAllLocations = (data) => {
         $('#directoryRecords').append(`
             <tr class='directory-items'>
                 <td class='id'>${l.id}</td>
-                <td>${l.name}</td>
-                <td>${l.dc}</td>
+                <td class='name'>${l.name}</td>
+                <td class='d-none d-lg-table-cell dc'>${l.dc}</td>
+                <td class='d-sm-table-cell d-lg-none text-center view-btn'><i class="fas fa-eye"></i></i></td>
+                <td class='d-none d-lg-table-cell text-center edit-btn'><i class="fas fa-edit"></i></td>
+                <td class='d-lg-table-cell text-center delete-btn'><i class="fas fa-trash-alt"></i></td>
             </tr>
         `)
     });
 
-    $('.directory-items').on('click', (e)=> {
+    /*$('.directory-items').on('click', (e)=> {
         let parent = $(e.target).closest('tr');
         let id = parent.find('.id').html();
         getRecord(id)
         .then((obj)=> displayModal(obj))
         .catch((err)=> console.error(err));
+    });*/
+
+    $('.view-btn').on('click', (e)=> {
+        let parent = $(e.target).closest('tr');
+        let id = parent.find('.id').html();
+
+        getRecord(id)
+        .then((obj)=> displayModal(obj))
+        .catch((err)=> console.error(err));
+    });
+
+    $('.edit-btn').on('click', (e)=> {
+        let parent = $(e.target).closest('tr');
+        let id = parent.find('.id').html();
+        let deps;
+
+        getRecord(id)
+        .then((obj)=> editModal(obj))
+        .catch((err)=> console.error(err));
+    });
+
+    $('.delete-btn').on('click', (e)=> {
+        let parent = $(e.target).closest('tr');
+        let em = {
+            id: parent.find('.id').html(),
+            name: parent.find('.name').html(),
+            count: parent.find('.dc').html()
+        };
+        confirmDeleteModal(em)
     });
 
     $('.id').hide();
@@ -202,7 +237,7 @@ const displayModal = (obj) => {
                 <div id='directoryModalBody' class="modal-body">
                     <table class="table table-striped">
                     <tr>
-                        <td>Location Name</td>
+                        <td>Name</td>
                         <td class="floatRight">${obj.name}</td>
                     </tr>
                     <tr>
@@ -253,7 +288,6 @@ const editModal = (obj) => {
                 </div>
                 <div class="modal-footer">
                     <button id="directoryModalSubmit" type="button" class="btn btn-dark"><i class="fas fa-check-circle"></i></button>
-                    <button id="directoryModalDelete" type="button" class="btn btn-dark"><i class="fas fa-trash-alt"></i></button>
                     <button type="button" class="btn btn-dark directory-modal-close"><i class="fas fa-ban"></i></button>
                 </div>
             </div>
@@ -287,9 +321,6 @@ const editModal = (obj) => {
     $('input').addClass("form-control");
     $('select').addClass("form-control");
     
-    $('#directoryModalDelete').on('click', ()=> {
-        confirmDeleteModal(record);
-    });
 };
 
 const validationModal = (type) => {
@@ -369,8 +400,8 @@ const confirmUpdateModal = (valid) => {
         updateRecord(record)
         .then(()=> displayRecords(filter))
         .catch((err)=> console.error(err));
-        $('#confirmUpdateModalTitle').html('Personnel Record Updated');
-        $('#confirmUpdateModalBody').html('<p>Your changes have been updated.</p>');
+        $('#confirmUpdateModalTitle').html('Location Updated');
+        $('#confirmUpdateModalBody').html('<p>Your changes have been Saved.</p>');
         $('#confirmUpdateModalSave').hide();
         $('#confirmUpdateModalCancel').hide();
         setTimeout(()=> {
@@ -509,8 +540,6 @@ const confirmNewRecordModal = (valid) => {
 const confirmDeleteModal = (obj) => {
     $('#confirmDeleteModal').show();
 
-    console.log(obj)
-
     if (obj.count > 0) {
 
         $('#confirmDeleteModal').html(`
@@ -552,7 +581,7 @@ const confirmDeleteModal = (obj) => {
     };
 
     $('#confirmDeleteModalDelete').on('click', ()=> {
-        deleteRecord(record)
+        deleteRecord(obj)
         .then(()=> displayRecords(filter))
         .catch((err)=> console.error(err));
         $('#confirmDeleteModalTitle').html('Personnel Record Deleted');

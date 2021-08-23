@@ -35,7 +35,7 @@ export const newRecordModal = (locs) => {
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 id='directoryModalTitle' class="modal-title"><i class="fas fa-building"></i> New Depatment Record</h5>
+                    <h5 id='directoryModalTitle' class="modal-title"><i class="fas fa-building"></i> New Department Record</h5>
                     <button type="button" class="btn-close directory-modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div id='directoryModalBody' class="modal-body">
@@ -274,7 +274,7 @@ const validationModal = (type) => {
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 id="validationModalTitle" class="modal-title">Invail Entry</h5>
+                    <h5 id="validationModalTitle" class="modal-title">Invalid Entry</h5>
                     <button id='validationModalClose' type="button" class="btn-close conf-modal-close-btn"></button>
                 </div>
                 <div id="validationModalBody" class="modal-body">
@@ -321,7 +321,7 @@ const confirmUpdateModal = (valid) => {
     `)
 
     if (valid) {
-        $('#confirmUpdateModalTitle').html('Save Confirmmation');
+        $('#confirmUpdateModalTitle').html('Save Confirmation');
         $('#confirmUpdateModalBody').html('<p>Do you wish to save your changes?</p>');
         $('#confirmUpdateModalSave').show();
     } else {
@@ -509,11 +509,11 @@ const confirmDeleteModal = (obj) => {
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 id='confirmDeleteModalTitle' class="modal-title">Comfirm Delete Record</h5>
+                    <h5 id='confirmDeleteModalTitle' class="modal-title">Confirm Delete Record</h5>
                     <button id='confirmDeleteModalClose' type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div id='confirmDeleteModalBody' class="modal-body">
-                    <p>Do you wish to procced with deleting department <span class='boldText'>${obj.name}?</span></p>
+                    <p>Do you wish to proceed with deleting department <span class='boldText'>${obj.name}?</span></p>
                     <p>This action cannot be undone.</p>
                 </div>
                 <div class="modal-footer">

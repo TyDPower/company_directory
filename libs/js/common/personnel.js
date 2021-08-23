@@ -277,7 +277,7 @@ const editModal = (deps, obj) => {
                             </td>
                         </tr>
                         <tr>
-                            <td>Job Title</td>
+                            <td>Job title</td>
                             <td id="jobTitleCont" class="floatRight">
                                 <input type="text" id="jobTitle" name="jobTitle" value="${obj.jobTitle}">
                             </td>
@@ -388,7 +388,7 @@ const validationModal = (type) => {
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 id="validationModalTitle" class="modal-title">Invail Entry</h5>
+                    <h5 id="validationModalTitle" class="modal-title">Invalid Entry</h5>
                     <button id='validationModalClose' type="button" class="btn-close conf-modal-close-btn"></button>
                 </div>
                 <div id="validationModalBody" class="modal-body">
@@ -435,7 +435,7 @@ const confirmUpdateModal = (valid) => {
     `)
 
     if (valid) {
-        $('#confirmUpdateModalTitle').html('Save Confirmmation');
+        $('#confirmUpdateModalTitle').html('Save Confirmation');
         $('#confirmUpdateModalBody').html('<p>Do you wish to save your changes?</p>');
         $('#confirmUpdateModalSave').show();
     } else {
@@ -602,11 +602,11 @@ const confirmDeleteModal = (obj) => {
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 id='confirmDeleteModalTitle' class="modal-title">Comfirm Delete Record</h5>
+                <h5 id='confirmDeleteModalTitle' class="modal-title">Confirm Delete Record</h5>
                 <button id='confirmDeleteModalClose' type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div id='confirmDeleteModalBody' class="modal-body">
-                <p>Do you wish to procced with deleting record <span class='boldText'>${obj.lname}, ${obj.fname}?</span> This action cannot be undone.</p>
+                <p>Do you wish to proceed with deleting record <span class='boldText'>${obj.lname}, ${obj.fname}?</span> This action cannot be undone.</p>
             </div>
             <div class="modal-footer">
                 <button id='confirmDeleteModalDelete' type="button" class="btn btn-dark"><i class="fas fa-trash-alt"></i></button>

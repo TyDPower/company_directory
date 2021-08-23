@@ -4,9 +4,9 @@ import * as locations from './common/locations.js';
 import { filter } from './common/filter.js';
 
 // HTTP TO HTTPS REdirect
-if (window.location.protocol == 'http:') {
+/*if (window.location.protocol == 'http:') {
     window.location.href = window.location.href.replace('http:', 'https:');
-};
+};*/
 
 // Preloader
 const preloader = () => {
